@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { readExcelFile, readMarkdownFile } from '../lib/readers';
 import { loadWordsForReview, addWordForReview, removeWordForReview } from '../lib/storage';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { loadAppSettings, saveAppSettings } from '../lib/appSettings';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -81,6 +82,10 @@ export default function TextView() {
     };
     load();
   }, [fileUri]);
+
+  useEffect(() => {
+    loadAppSettings().then((s) => setFontScale(s.fontScale ?? 1));
+  }, []);
 
   const openMenu = () => {
     if (Platform.OS === 'ios') {
@@ -268,6 +273,7 @@ export default function TextView() {
                 step={0.05}
                 value={fontScale}
                 onValueChange={setFontScale}
+                onSlidingComplete={(v) => { saveAppSettings({ fontScale: v }); }}
               />
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 240 }}>
                 <Text style={{ fontSize: 12 }}>A</Text>
@@ -285,7 +291,7 @@ export default function TextView() {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  scrollView: { marginVertical: 20 },
+  scrollView: { marginVertical: 0 },
   text: { color: '#333' },
   bold: { fontWeight: 'bold' },
   italic: { fontStyle: 'italic' },
