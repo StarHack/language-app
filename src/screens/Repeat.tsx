@@ -61,7 +61,7 @@ export default function Repeat() {
     if (currentIndex < total - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
-      Alert.alert('All done', 'No more cards for now. Come back later.');
+      // Alert.alert('All done', 'No more cards for now. Come back later.');
       setCurrentIndex(total);
     }
   };
