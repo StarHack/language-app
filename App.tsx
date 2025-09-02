@@ -7,6 +7,7 @@ import Courses from './src/screens/Courses';
 import Repeat from './src/screens/Repeat';
 import Settings from './src/screens/Settings';
 import TextView from './src/components/TextView';
+import QuizScreen from './src/screens/QuizScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ function Tabs() {
       <Tab.Screen name="Courses" component={Courses} options={{ headerShown: true, title: 'Courses', tabBarLabel: 'Courses' }} />
       <Tab.Screen name="Repeat" component={Repeat} options={{ headerShown: true, title: 'Repeat', tabBarLabel: 'Repeat' }} />
       <Tab.Screen name="Settings" component={Settings} options={{ headerShown: true, title: 'Settings', tabBarLabel: 'Settings' }} />
+      <Tab.Screen name="Quiz" component={QuizScreen} options={{ headerShown: true, title: 'Quiz', tabBarLabel: 'Quiz' }} />
     </Tab.Navigator>
   );
 }

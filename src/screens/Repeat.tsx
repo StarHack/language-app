@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FlipCard from '../components/FlipCard';
 import { loadWordsForReview, saveWordsForReview, ReviewWord } from '../lib/storage';
+import { Ionicons } from '@expo/vector-icons';
+import * as Speech from 'expo-speech';
 
 export default function Repeat() {
   const navigation = useNavigation<any>();
@@ -61,7 +63,6 @@ export default function Repeat() {
     if (currentIndex < total - 1) {
       setCurrentIndex((i) => i + 1);
     } else {
-      // Alert.alert('All done', 'No more cards for now. Come back later.');
       setCurrentIndex(total);
     }
   };
@@ -87,18 +88,33 @@ export default function Repeat() {
     goToNextCard();
   };
 
+  const speakCurrent = () => {
+    const w = wordsForReview[currentIndex];
+    if (!w) return;
+    try {
+      Speech.stop();
+      Speech.speak(w.cleanedWord, { language: 'ru-RU', rate: 0.9 });
+    } catch {}
+  };
+
   const currentWord = wordsForReview[currentIndex];
 
   return (
     <View style={styles.container}>
       {currentWord ? (
-        <FlipCard
-          key={cardKey}
-          word={currentWord.cleanedWord}
-          translation={currentWord.translation}
-          onRemembered={() => handleRemembered(currentWord)}
-          onForgotten={() => handleForgotten(currentWord)}
-        />
+        <>
+          <FlipCard
+            key={cardKey}
+            word={currentWord.cleanedWord}
+            translation={currentWord.translation}
+            onRemembered={() => handleRemembered(currentWord)}
+            onForgotten={() => handleForgotten(currentWord)}
+          />
+          <TouchableOpacity onPress={speakCurrent} style={styles.audioBtn}>
+            <Ionicons name="volume-high" size={22} color="#fff" />
+            <Text style={styles.audioText}>Play</Text>
+          </TouchableOpacity>
+        </>
       ) : (
         <Text style={styles.noWordsText}>No words to review at the moment</Text>
       )}
@@ -107,6 +123,8 @@ export default function Repeat() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20, gap: 12 },
   noWordsText: { fontSize: 18, color: '#777' },
+  audioBtn: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#1E90FF', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 999 },
+  audioText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });

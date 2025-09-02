@@ -12,6 +12,7 @@ npx create-expo-app@latest language-app -t blank-typescript
 npx expo install react-native-screens react-native-safe-area-context
 npx expo install @react-native-async-storage/async-storage
 npx expo install @react-native-community/slider
+npx expo install expo-speech
 npm install @react-navigation/native @react-navigation/bottom-tabs
 npx expo install @react-navigation/native-stack @react-navigation/native react-native-screens react-native-safe-area-context react-native-gesture-handler
 
